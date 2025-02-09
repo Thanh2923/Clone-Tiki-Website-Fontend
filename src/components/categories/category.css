@@ -1,0 +1,15 @@
+/* Applying the sticky behavior */
+.categories-container {
+  position: sticky;
+  top: 300px;  /* Initially 300px from top */
+  bottom: 0;   /* When the user scrolls past the 300px, it should stick to the bottom */
+  z-index: 50;  /* Ensure the container stays on top of other elements */
+}
+
+/* Add transition to make the change smooth */
+.categories-container.sticky {
+  position: fixed;
+  top: 100px;   /* Fixed position after scroll */
+  bottom: 0;    /* Fixed position from bottom */
+  transition: top 0.3s, bottom 0.3s;
+}
