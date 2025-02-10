@@ -61,7 +61,7 @@ const Page = () => {
   const categoryId = Array.isArray(categoryIdRaw) ? categoryIdRaw[0] : categoryIdRaw;
 
   // Lấy các tham số tìm kiếm từ URL query params
-  const limit = searchParams.get("limit") || "10";
+  const limit = searchParams.get("limit") || "12";
   const page = searchParams.get("page") || "1";
   const brandId = searchParams.get("brandId") || "";
   const minPriceSale = searchParams.get("minPriceSale") || "";

@@ -13,7 +13,7 @@ const ProductItemDetail:React.FC<Products> = ({products}) => {
   const pathname = usePathname();
   const basePath = "/" + pathname.split("/").slice(1, 3).join("/");
   return (
-    <div className="w-full cursor-pointer  bg-white mb-5 grid grid-cols-3 gap-3 md:grid-cols-6 lg:grid-cols-10 ">
+    <div className="w-full cursor-pointer  bg-white mb-5 grid grid-cols-3 gap-3 md:grid-cols-6 lg:grid-cols-7 ">
        {products?.map((product) => (
     
         <Link key={product.id} href={`${basePath}/${slugify(product.name)}/${product.id}`}>

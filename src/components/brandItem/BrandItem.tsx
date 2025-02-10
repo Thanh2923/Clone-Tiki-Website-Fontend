@@ -58,13 +58,13 @@ const BrandItem: React.FC<BrandItemProps> = ({ handleFilter,selectedBrand, setBr
           onClick={() => handleClickFilterByBrand(brand.id)}  // Sửa lại khi bỏ chọn
           className={`border text-sm h-[40px] flex items-center rounded-3xl px-5 hover:border-blue-500 ${selectedBrand === String(brand.id) ? "border-blue-500 bg-blue-100" : ""}`}
         >
-          <Image
+         {brand.image  ?  <Image
             className="rounded-lg w-auto h-auto"
             src={`/brandItem/${brand.image}`}
             alt={brand.name}
             width={40}
             height={10}
-          />
+          /> : `${brand.name}`}
         </button>
       ))}
     </div>
