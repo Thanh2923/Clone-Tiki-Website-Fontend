@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { useSession } from "next-auth/react";
 import { fetchUsersById, updateUser } from "@/redux/user/userThunk";
 import Link from "next/link";
+import {signOut } from "next-auth/react";
 
 interface User {
   id: number;
@@ -96,6 +97,10 @@ const ProfileCard = () => {
         >
           Chỉnh sửa thông tin
         </button>
+      </div>
+
+           <div className="w-full mt-2 lg:hidden block flex justify-end">
+       <button type="button" className="text-blue-500"  onClick={() => signOut()}>Đăng Xuất</button>
       </div>
 
       {isEditing && <EditProfileForm user={user} onUpdate={handleUpdate} onClose={() => setIsEditing(false)} />}
