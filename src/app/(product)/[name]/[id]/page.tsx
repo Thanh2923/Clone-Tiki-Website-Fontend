@@ -7,22 +7,24 @@ import ProductItemMain from "@/components/product/ProductItemMain";
 import { Product } from "@/types";
 import FilterProduct from "@/components/filterProduct/FilterProduct";
 import Loading from "@/components/loading/Loading";
+import Pagination from "@/components/Pagination/Pagination";
 
 interface ProductResponse {
   products: Product[];
   totalPages: number;
+  currentPage:number;
 }
 
 const fetchProduct = async (
   limit: string = "10",
-  page: string = "1",
+  page: number = 1,
   categoryId: string,
   brandId?: string,
   minPriceSale?: string,
   maxPriceSale?: string
 ): Promise<ProductResponse> => {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  const params: { [key: string]: string | undefined } = {
+  const params: { [key: string]: string | number | undefined } = {
     limit,
     page,
     categoryId,
@@ -34,7 +36,7 @@ const fetchProduct = async (
 
   if (!apiUrl) {
     console.error("NEXT_PUBLIC_API_URL is not defined");
-    return { products: [], totalPages: 0 };
+    return { products: [], totalPages: 0 ,currentPage:1};
   }
 
   try {
@@ -42,10 +44,11 @@ const fetchProduct = async (
     return {
       products: res.data.products || [],
       totalPages: res.data.totalPages || 0,
+      currentPage:res.data.currentPage || "1",
     };
   } catch (error) {
     console.error("Error fetching data:", error);
-    return { products: [], totalPages: 0 };
+    return { products: [], totalPages: 0,currentPage:1};
   }
 };
 
@@ -53,7 +56,8 @@ const fetchProduct = async (
 const Page = () => {
   const { id: categoryIdRaw } = useParams(); // Lấy categoryId từ URL params
   const searchParams = useSearchParams(); // Lấy các searchParams từ URL
-
+  const [page, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(12);
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -62,7 +66,6 @@ const Page = () => {
 
   // Lấy các tham số tìm kiếm từ URL query params
   const limit = searchParams.get("limit") || "12";
-  const page = searchParams.get("page") || "1";
   const brandId = searchParams.get("brandId") || "";
   const minPriceSale = searchParams.get("minPriceSale") || "";
   const maxPriceSale = searchParams.get("maxPriceSale") || "";
@@ -72,7 +75,7 @@ const Page = () => {
 
     const getProducts = async () => {
       setLoading(true); // Bắt đầu tải dữ liệu
-      const { products } = await fetchProduct(
+      const { products,currentPage,totalPages } = await fetchProduct(
         limit,
         page,
         categoryId,
@@ -80,7 +83,10 @@ const Page = () => {
         minPriceSale,
         maxPriceSale
       );
-      setProducts(products); // Lưu sản phẩm vào state
+      setProducts(products);
+      setCurrentPage(currentPage);
+      setTotalPages(totalPages)
+      // Lưu sản phẩm vào state
       setLoading(false); // Kết thúc tải dữ liệu
     };
 
@@ -93,8 +99,12 @@ const Page = () => {
       {loading ? (
         <Loading/>
       ) : (
+       <>
         <ProductItemMain products={products} />
-      )}
+        <Pagination currentPage={page} totalPages={totalPages} onPageChange={setCurrentPage} />
+    
+       </>
+       )}
     </div>
   );
 };

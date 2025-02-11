@@ -10,7 +10,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { createPayment } from "@/redux/payment/paymentThunk";
-
+import Loading from "@/components/loading/Loading";
 interface Product {
   id: number;
     name: string;
@@ -38,6 +38,7 @@ const Page: React.FC = () => {
   const cartData = searchParams.get("order");
   const { users } = useSelector((state: RootState) => state.User);
   const [selected, setSelected] = useState("payos");
+  const [loading,setLoading] = useState<boolean>(false)
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   let cartItems: CartItem[] = [];
@@ -73,15 +74,14 @@ const Page: React.FC = () => {
       orderDetail:newArray,
       cartId:cartIdItem
     }
-
+    setLoading(true)
     const req = await dispatch(createOrder(orderData));
-
     const dataPayment = {
       orderId: req.payload.order,
       amount: orderData.totalPrice,
       paymentMethod: selected === "payos" ?  "paypal"  : "cash_on_delivery"
     }
-
+     
    
     if(selected === "payos" ){
        const linkPayment =  await dispatch(createPayment(dataPayment))
@@ -103,6 +103,7 @@ const Page: React.FC = () => {
 
   return (
     <div className="w-full p-5 grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-12 h-full">
+      {loading && <Loading/>}
     <div className="lg:col-span-8 md:col-span-2 p-2 bg-white">
       <Title title="Chọn hình thức giao hàng" />
       <div className="w-full">

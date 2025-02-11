@@ -45,7 +45,7 @@ const Header:React.FC = () => {
                     <Link href="/" className='text-gray-500 font-medium'>sách</Link>
                     </div>
                 </div>
-                <div className="lg:w-[30%] md:w-[50%] text-[14px] sm:w-full lg:flex  py-2 flex-col menu">
+                <div className="lg:w-[35%] md:w-[50%] text-[14px] sm:w-full lg:flex  py-2 flex-col menu">
                   <div className='w-full flex items-center justify-center gap-7 '>
                  <div>
                  <div className='lg:flex gap-1 hidden justify-center '>

@@ -86,11 +86,11 @@ const CartItem: React.FC<handle> = ({handleSetTotal,handleCartItem}) => {
   useEffect(() => {
     const initialQuantities: { [key: number]: number } = {};
     cart.forEach(item => {
-      initialQuantities[item.id] = item.quantity;
+      initialQuantities[item.id] = Math.max(1, item.quantity); // Đảm bảo không nhỏ hơn 1
     });
     setQuantities(initialQuantities);
   }, [cart]);
-
+  
   const increaseQuantity = async (id: number) => {
     setQuantities(prev => ({ ...prev, [id]: (prev[id] || 1) + 1 }));
    
