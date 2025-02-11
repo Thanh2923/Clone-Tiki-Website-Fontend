@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { useSession } from "next-auth/react";
 import { fetchUsersById, updateUser } from "@/redux/user/userThunk";
-import Loading from "@/components/loading/Loading";
 import Link from "next/link";
 
 interface User {
@@ -45,12 +44,25 @@ const ProfileCard = () => {
   };
 
   if (!user) {
-    return <Loading/>
+    return (
+      <div className="w-full flex flex-col items-center justify-center py-10 bg-gray-100 rounded-lg shadow-md">
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">
+          Vui lòng đăng nhập để tiếp tục
+        </h3>
+        <Link
+          href="/login"
+          className="bg-blue-500 text-white text-md font-semibold py-2 px-6 rounded-lg hover:bg-blue-600 transition-all duration-300"
+        >
+          Đăng nhập
+        </Link>
+      </div>
+    );
   }
+  
 
   return (
    <div className="w-full">
-      {session ?  <div className="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
+        <div className="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
       <h2 className="text-2xl font-semibold text-gray-800 text-center mb-5">Thông Tin Cá Nhân</h2>
 
       <div className="overflow-x-auto">
@@ -87,7 +99,7 @@ const ProfileCard = () => {
       </div>
 
       {isEditing && <EditProfileForm user={user} onUpdate={handleUpdate} onClose={() => setIsEditing(false)} />}
-    </div> :  <Link href="/login">Đăng nhập</Link> }
+    </div> 
    </div>
   );
 };
