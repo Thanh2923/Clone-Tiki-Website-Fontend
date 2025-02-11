@@ -6,6 +6,7 @@ import { AppDispatch, RootState } from "@/redux/store";
 import { useSession } from "next-auth/react";
 import { fetchUsersById, updateUser } from "@/redux/user/userThunk";
 import Loading from "@/components/loading/Loading";
+import Link from "next/link";
 
 interface User {
   id: number;
@@ -48,7 +49,8 @@ const ProfileCard = () => {
   }
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
+   <div className="w-full">
+      {session ?  <div className="max-w-3xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg border border-gray-200">
       <h2 className="text-2xl font-semibold text-gray-800 text-center mb-5">Thông Tin Cá Nhân</h2>
 
       <div className="overflow-x-auto">
@@ -85,7 +87,8 @@ const ProfileCard = () => {
       </div>
 
       {isEditing && <EditProfileForm user={user} onUpdate={handleUpdate} onClose={() => setIsEditing(false)} />}
-    </div>
+    </div> :  <Link href="/login">Đăng nhập</Link> }
+   </div>
   );
 };
 

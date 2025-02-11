@@ -11,6 +11,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { createPayment } from "@/redux/payment/paymentThunk";
 import Loading from "@/components/loading/Loading";
+import { useSession } from "next-auth/react";
 interface Product {
   id: number;
     name: string;
@@ -37,6 +38,7 @@ const Page: React.FC = () => {
   const searchParams = useSearchParams();
   const cartData = searchParams.get("order");
   const { users } = useSelector((state: RootState) => state.User);
+  const {data:session} = useSession();
   const [selected, setSelected] = useState("payos");
   const [loading,setLoading] = useState<boolean>(false)
   const dispatch = useDispatch<AppDispatch>();
@@ -65,9 +67,9 @@ const Page: React.FC = () => {
   const cartIdItem = cartItems && cartItems.map(item=>item.id);
   
  const handleCheckout = async ()=>{
-  if(users.length > 0 && !users[0]?.name){
+  if ((users.length > 0 && !users[0]?.name) || (!users.length && !session)) {
     router.push("/address");
-    return
+    return;
 }
     const orderData= {
       totalPrice:totalAmount - 25000,
