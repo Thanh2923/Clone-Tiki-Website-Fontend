@@ -67,7 +67,12 @@ const Page: React.FC = () => {
   const cartIdItem = cartItems && cartItems.map(item=>item.id);
   
  const handleCheckout = async ()=>{
-  if ((users.length > 0 && !users[0]?.name) || (!users.length && !session)) {
+   if(!users.length && !session){
+    router.push("/login");
+    return
+   }
+
+  if ((users.length > 0 && !users[0]?.name)) {
     router.push("/address");
     return;
 }
